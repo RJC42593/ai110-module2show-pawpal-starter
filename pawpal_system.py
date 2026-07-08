@@ -10,13 +10,16 @@ class Task:
     completed: bool = False
 
     def mark_complete(self):
-        pass
+        self.completed = True
 
     def update_priority(self, priority):
-        pass
+        self.priority = priority
 
     def get_details(self):
-        pass
+        return (
+            f"{self.name} ({self.category}) - "
+            f"{self.duration} min - Priority {self.priority}"
+        )
 
 
 @dataclass
@@ -27,13 +30,14 @@ class Pet:
     tasks: list = field(default_factory=list)
 
     def add_task(self, task):
-        pass
+        self.tasks.append(task)
 
     def remove_task(self, task):
-        pass
+        if task in self.tasks:
+            self.tasks.remove(task)
 
     def get_tasks(self):
-        pass
+        return self.tasks
 
 
 @dataclass
@@ -43,28 +47,49 @@ class Owner:
     pets: list = field(default_factory=list)
 
     def add_pet(self, pet):
-        pass
+        self.pets.append(pet)
 
     def remove_pet(self, pet):
-        pass
+        if pet in self.pets:
+            self.pets.remove(pet)
 
     def view_schedule(self):
-        pass
+        for pet in self.pets:
+            print(f"\n{pet.name}'s Tasks:")
+            for task in pet.tasks:
+                print(task.get_details())
 
 
 class Scheduler:
     def __init__(self):
-        self.tasks = []
         self.daily_plan = []
 
-    def generate_schedule(self):
-        pass
+    def generate_schedule(self, owner):
+        tasks = []
 
-    def sort_tasks(self):
-        pass
+        for pet in owner.pets:
+            tasks.extend(pet.tasks)
 
-    def filter_tasks(self):
-        pass
+        tasks = self.sort_tasks(tasks)
+        tasks = self.filter_tasks(tasks, owner.available_time)
 
-    def detect_conflicts(self):
-        pass
+        self.daily_plan = tasks
+        return self.daily_plan
+
+    def sort_tasks(self, tasks):
+        return sorted(tasks, key=lambda task: task.priority, reverse=True)
+
+    def filter_tasks(self, tasks, available_time):
+        selected = []
+        total_time = 0
+
+        for task in tasks:
+            if total_time + task.duration <= available_time:
+                selected.append(task)
+                total_time += task.duration
+
+        return selected
+
+    def detect_conflicts(self, tasks):
+        total_time = sum(task.duration for task in tasks)
+        return total_time
