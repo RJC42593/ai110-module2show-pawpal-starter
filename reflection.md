@@ -53,7 +53,15 @@ After reviewing my initial design, I decided not to make any major changes. The 
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
+
+   One tradeoff in my scheduler is that conflict detection only checks whether two tasks have the exact same start time. For example, it identifies a conflict if two tasks are both scheduled for 8:30 AM, but it does not detect overlapping durations, such as one task running from 8:00 AM to 8:45 AM and another starting at 8:30 AM.
+
 - Why is that tradeoff reasonable for this scenario?
+
+This approach is reasonable for the current version of PawPal+ because it keeps the algorithm simple, readable, and easy to verify. A future version could calculate each task's ending time and detect partial overlaps for more accurate scheduling.
+
+I also reviewed a more efficient dictionary-based conflict detection algorithm. Although it could perform better with a very large number of tasks, I kept the nested-loop version because the app is expected to manage a relatively small task list and the original algorithm is easier to understand and maintain.
+
 
 ---
 

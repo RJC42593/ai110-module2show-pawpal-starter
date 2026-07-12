@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-
+from datetime import date, timedelta
 
 @dataclass
 class Task:
@@ -7,7 +7,10 @@ class Task:
     duration: int
     priority: int
     category: str
+    time: str = "00:00"
     completed: bool = False
+    frequency: str = "once"
+    due_date: date = field(default_factory=date.today)
 
     def mark_complete(self):
         """Marks the task as completed."""
@@ -107,6 +110,59 @@ class Scheduler:
         return selected
 
     def detect_conflicts(self, tasks):
-        """Calculates the total scheduled time."""
-        total_time = sum(task.duration for task in tasks)
-        return total_time
+        """Returns pairs of tasks scheduled at the same time."""
+        conflicts = []
+
+        for i in range(len(tasks)):
+            for j in range(i + 1, len(tasks)):
+                if tasks[i].time == tasks[j].time:
+                    conflicts.append((tasks[i], tasks[j]))
+
+        return conflicts
+
+    def sort_by_time(self, tasks):
+        """Returns tasks sorted by scheduled time."""
+        return sorted(tasks, key=lambda task: task.time)
+
+    def filter_by_status(self, tasks, completed):
+        """Returns tasks matching the requested completion status."""
+        return [
+            task
+            for task in tasks
+            if task.completed == completed
+        ]
+
+    def filter_by_pet(self, owner, pet_name):
+        """Returns all tasks belonging to the named pet."""
+        for pet in owner.pets:
+            if pet.name.lower() == pet_name.lower():
+                return pet.tasks
+
+        return []
+    
+    def mark_task_complete(self, task, pet):
+        """Completes a task and creates its next occurrence if recurring."""
+        task.mark_complete()
+
+        if task.frequency.lower() == "daily":
+            next_due_date = task.due_date + timedelta(days=1)
+        elif task.frequency.lower() == "weekly":
+            next_due_date = task.due_date + timedelta(weeks=1)
+        else:
+            return None
+
+        next_task = Task(
+            name=task.name,
+            duration=task.duration,
+            priority=task.priority,
+            category=task.category,
+            time=task.time,
+            completed=False,
+            frequency=task.frequency,
+            due_date=next_due_date,
+        )
+
+        pet.add_task(next_task)
+        return next_task
+
+
