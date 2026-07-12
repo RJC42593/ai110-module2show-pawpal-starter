@@ -98,3 +98,42 @@ Describe your app in numbered steps so a reader can follow along without watchin
 5. <!-- Add more steps as needed -->
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+
+
+## Testing PawPal+
+
+### Running the Tests
+
+Run the automated test suite with:
+
+```bash
+python -m pytest
+```
+
+### What the Tests Cover
+
+The test suite verifies:
+
+- Tasks are sorted into chronological order.
+- Filtering returns the correct tasks.
+- Recurring daily tasks create a new task for the next day.
+- Conflict detection identifies tasks scheduled at the same time.
+- Task completion updates the completed status correctly.
+
+### Successful Test Run
+
+```
+============================= test session starts =============================
+platform win32 -- Python 3.11.4, pytest-9.0.3, pluggy-1.6.0
+collected 5 items
+
+tests/test_pawpal.py .....                                           [100%]
+
+============================== 5 passed in 0.10s ==============================
+```
+
+### Confidence Level
+
+***** (5/5)
+
+All automated tests pass successfully, including sorting, filtering, recurring task creation, conflict detection, and task completion behavior. While additional edge cases could always be added, the current test suite provides strong confidence that the core functionality works as intended.
