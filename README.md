@@ -42,41 +42,43 @@ pip install -r requirements.txt
 6. Connect your logic to the Streamlit UI in `app.py`.
 7. Refine UML so it matches what you actually built.
 
-## 🖥️ Sample Output
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
-
-```
 ## 🖥️ Sample Output
 
 ```
-Today's Schedule
+Tasks Sorted by Time
+--------------------
+08:30 - Morning walk (Exercise) - 30 min - Priority 3
+08:30 - Medication (Health) - 15 min - Priority 3
+09:00 - Breakfast (Feeding) - 10 min - Priority 2
+14:00 - Play time (Enrichment) - 20 min - Priority 1
+
+Incomplete Tasks
 ----------------
-Morning walk (Exercise) - 30 min - Priority 3
-Medication (Health) - 15 min - Priority 3
 Breakfast (Feeding) - 10 min - Priority 2
+Morning walk (Exercise) - 30 min - Priority 3
 Play time (Enrichment) - 20 min - Priority 1
+Medication (Health) - 15 min - Priority 3
+
+Biscuit's Tasks
+---------------
+Breakfast (Feeding) - 10 min - Priority 2
+Morning walk (Exercise) - 30 min - Priority 3
+
+Task Conflicts
+--------------
+Warning: 'Morning walk' conflicts with 'Medication' at 08:30.
+
+Recurring Task Test
+-------------------
+Original completed: True
+Next task: Evening medication
+Next due date: 2026-07-13
+Next task completed: False
+
 ```
 
-## 🧪 Testing PawPal+
 
-```bash
-# Run the full test suite:
-pytest
-
-# Run with coverage:
-pytest --cov
-```
-
-Sample test output:
-
-```
-# Paste your pytest output here
-```
-
-## 📐 Smarter Scheduling
-
-> Fill in once you've implemented scheduling logic.
 
 ## 📐 Smarter Scheduling
 
@@ -89,18 +91,21 @@ Sample test output:
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+1. Open the PawPal+ Streamlit app.
+2. Enter a task title, duration, priority, and scheduled time.
+3. Click **Add Task** to add the task to the list.
+4. Repeat until all desired pet care tasks have been entered.
+5. Click **Generate Schedule** to create a daily schedule.
+6. The schedule is displayed in chronological order.
+7. If two tasks share the same scheduled time, the app displays a warning message identifying the conflict.
+
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
 
 
-## Testing PawPal+
+## 🧪 Testing PawPal+
+
 
 ### Running the Tests
 
@@ -134,6 +139,6 @@ tests/test_pawpal.py .....                                           [100%]
 
 ### Confidence Level
 
-***** (5/5)
+(5/5)
 
 All automated tests pass successfully, including sorting, filtering, recurring task creation, conflict detection, and task completion behavior. While additional edge cases could always be added, the current test suite provides strong confidence that the core functionality works as intended.
